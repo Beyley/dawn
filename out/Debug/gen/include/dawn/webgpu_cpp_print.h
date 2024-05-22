@@ -1,3 +1,29 @@
+// Copyright 2021 The Dawn & Tint Authors
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
+//
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+// 3. Neither the name of the copyright holder nor the names of its
+//    contributors may be used to endorse or promote products derived from
+//    this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifndef WEBGPU_CPP_PRINT_H_
 #define WEBGPU_CPP_PRINT_H_
@@ -397,6 +423,29 @@ namespace wgpu {
       return o;
   }
   template <typename CharT, typename Traits>
+  std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, CompositeAlphaMode value) {
+      switch (value) {
+      case CompositeAlphaMode::Auto:
+        o << "CompositeAlphaMode::Auto";
+        break;
+      case CompositeAlphaMode::Opaque:
+        o << "CompositeAlphaMode::Opaque";
+        break;
+      case CompositeAlphaMode::Premultiplied:
+        o << "CompositeAlphaMode::Premultiplied";
+        break;
+      case CompositeAlphaMode::Unpremultiplied:
+        o << "CompositeAlphaMode::Unpremultiplied";
+        break;
+      case CompositeAlphaMode::Inherit:
+        o << "CompositeAlphaMode::Inherit";
+        break;
+          default:
+            o << "CompositeAlphaMode::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<CompositeAlphaMode>::type>(value);
+      }
+      return o;
+  }
+  template <typename CharT, typename Traits>
   std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, CreatePipelineAsyncStatus value) {
       switch (value) {
       case CreatePipelineAsyncStatus::Success:
@@ -448,11 +497,17 @@ namespace wgpu {
   template <typename CharT, typename Traits>
   std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, DeviceLostReason value) {
       switch (value) {
-      case DeviceLostReason::Undefined:
-        o << "DeviceLostReason::Undefined";
+      case DeviceLostReason::Unknown:
+        o << "DeviceLostReason::Unknown";
         break;
       case DeviceLostReason::Destroyed:
         o << "DeviceLostReason::Destroyed";
+        break;
+      case DeviceLostReason::InstanceDropped:
+        o << "DeviceLostReason::InstanceDropped";
+        break;
+      case DeviceLostReason::FailedCreation:
+        o << "DeviceLostReason::FailedCreation";
         break;
           default:
             o << "DeviceLostReason::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<DeviceLostReason>::type>(value);
@@ -606,8 +661,11 @@ namespace wgpu {
       case FeatureName::PixelLocalStorageNonCoherent:
         o << "FeatureName::PixelLocalStorageNonCoherent";
         break;
-      case FeatureName::Norm16TextureFormats:
-        o << "FeatureName::Norm16TextureFormats";
+      case FeatureName::Unorm16TextureFormats:
+        o << "FeatureName::Unorm16TextureFormats";
+        break;
+      case FeatureName::Snorm16TextureFormats:
+        o << "FeatureName::Snorm16TextureFormats";
         break;
       case FeatureName::MultiPlanarFormatExtendedUsages:
         o << "FeatureName::MultiPlanarFormatExtendedUsages";
@@ -647,6 +705,21 @@ namespace wgpu {
         break;
       case FeatureName::DrmFormatCapabilities:
         o << "FeatureName::DrmFormatCapabilities";
+        break;
+      case FeatureName::Norm16TextureFormats:
+        o << "FeatureName::Norm16TextureFormats";
+        break;
+      case FeatureName::MultiPlanarFormatNv16:
+        o << "FeatureName::MultiPlanarFormatNv16";
+        break;
+      case FeatureName::MultiPlanarFormatNv24:
+        o << "FeatureName::MultiPlanarFormatNv24";
+        break;
+      case FeatureName::MultiPlanarFormatP210:
+        o << "FeatureName::MultiPlanarFormatP210";
+        break;
+      case FeatureName::MultiPlanarFormatP410:
+        o << "FeatureName::MultiPlanarFormatP410";
         break;
       case FeatureName::SharedTextureMemoryVkDedicatedAllocation:
         o << "FeatureName::SharedTextureMemoryVkDedicatedAllocation";
@@ -695,6 +768,15 @@ namespace wgpu {
         break;
       case FeatureName::StaticSamplers:
         o << "FeatureName::StaticSamplers";
+        break;
+      case FeatureName::YCbCrVulkanSamplers:
+        o << "FeatureName::YCbCrVulkanSamplers";
+        break;
+      case FeatureName::ShaderModuleCompilationOptions:
+        o << "FeatureName::ShaderModuleCompilationOptions";
+        break;
+      case FeatureName::DawnLoadResolveTexture:
+        o << "FeatureName::DawnLoadResolveTexture";
         break;
           default:
             o << "FeatureName::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<FeatureName>::type>(value);
@@ -763,6 +845,9 @@ namespace wgpu {
         break;
       case LoadOp::Load:
         o << "LoadOp::Load";
+        break;
+      case LoadOp::ExpandResolveTexture:
+        o << "LoadOp::ExpandResolveTexture";
         break;
           default:
             o << "LoadOp::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<LoadOp>::type>(value);
@@ -842,6 +927,9 @@ namespace wgpu {
       switch (value) {
       case PresentMode::Fifo:
         o << "PresentMode::Fifo";
+        break;
+      case PresentMode::FifoRelaxed:
+        o << "PresentMode::FifoRelaxed";
         break;
       case PresentMode::Immediate:
         o << "PresentMode::Immediate";
@@ -1086,6 +1174,12 @@ namespace wgpu {
       case SType::DrmFormatCapabilities:
         o << "SType::DrmFormatCapabilities";
         break;
+      case SType::ShaderModuleCompilationOptions:
+        o << "SType::ShaderModuleCompilationOptions";
+        break;
+      case SType::ColorTargetStateExpandResolveTextureDawn:
+        o << "SType::ColorTargetStateExpandResolveTextureDawn";
+        break;
       case SType::SharedTextureMemoryVkImageDescriptor:
         o << "SType::SharedTextureMemoryVkImageDescriptor";
         break;
@@ -1128,6 +1222,9 @@ namespace wgpu {
       case SType::SharedTextureMemoryVkImageLayoutEndState:
         o << "SType::SharedTextureMemoryVkImageLayoutEndState";
         break;
+      case SType::SharedTextureMemoryD3DSwapchainBeginState:
+        o << "SType::SharedTextureMemoryD3DSwapchainBeginState";
+        break;
       case SType::SharedFenceVkSemaphoreOpaqueFDDescriptor:
         o << "SType::SharedFenceVkSemaphoreOpaqueFDDescriptor";
         break;
@@ -1160,6 +1257,15 @@ namespace wgpu {
         break;
       case SType::SharedBufferMemoryD3D12ResourceDescriptor:
         o << "SType::SharedBufferMemoryD3D12ResourceDescriptor";
+        break;
+      case SType::StaticSamplerBindingLayout:
+        o << "SType::StaticSamplerBindingLayout";
+        break;
+      case SType::YCbCrVkDescriptor:
+        o << "SType::YCbCrVkDescriptor";
+        break;
+      case SType::SharedTextureMemoryAHardwareBufferProperties:
+        o << "SType::SharedTextureMemoryAHardwareBufferProperties";
         break;
           default:
             o << "SType::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<SType>::type>(value);
@@ -1209,6 +1315,20 @@ namespace wgpu {
         break;
           default:
             o << "SharedFenceType::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<SharedFenceType>::type>(value);
+      }
+      return o;
+  }
+  template <typename CharT, typename Traits>
+  std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, Status value) {
+      switch (value) {
+      case Status::Success:
+        o << "Status::Success";
+        break;
+      case Status::Error:
+        o << "Status::Error";
+        break;
+          default:
+            o << "Status::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<Status>::type>(value);
       }
       return o;
   }
@@ -1281,6 +1401,32 @@ namespace wgpu {
         break;
           default:
             o << "StoreOp::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<StoreOp>::type>(value);
+      }
+      return o;
+  }
+  template <typename CharT, typename Traits>
+  std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, SurfaceGetCurrentTextureStatus value) {
+      switch (value) {
+      case SurfaceGetCurrentTextureStatus::Success:
+        o << "SurfaceGetCurrentTextureStatus::Success";
+        break;
+      case SurfaceGetCurrentTextureStatus::Timeout:
+        o << "SurfaceGetCurrentTextureStatus::Timeout";
+        break;
+      case SurfaceGetCurrentTextureStatus::Outdated:
+        o << "SurfaceGetCurrentTextureStatus::Outdated";
+        break;
+      case SurfaceGetCurrentTextureStatus::Lost:
+        o << "SurfaceGetCurrentTextureStatus::Lost";
+        break;
+      case SurfaceGetCurrentTextureStatus::OutOfMemory:
+        o << "SurfaceGetCurrentTextureStatus::OutOfMemory";
+        break;
+      case SurfaceGetCurrentTextureStatus::DeviceLost:
+        o << "SurfaceGetCurrentTextureStatus::DeviceLost";
+        break;
+          default:
+            o << "SurfaceGetCurrentTextureStatus::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<SurfaceGetCurrentTextureStatus>::type>(value);
       }
       return o;
   }
@@ -1650,6 +1796,18 @@ namespace wgpu {
         break;
       case TextureFormat::R8BG8A8Triplanar420Unorm:
         o << "TextureFormat::R8BG8A8Triplanar420Unorm";
+        break;
+      case TextureFormat::R8BG8Biplanar422Unorm:
+        o << "TextureFormat::R8BG8Biplanar422Unorm";
+        break;
+      case TextureFormat::R8BG8Biplanar444Unorm:
+        o << "TextureFormat::R8BG8Biplanar444Unorm";
+        break;
+      case TextureFormat::R10X6BG10X6Biplanar422Unorm:
+        o << "TextureFormat::R10X6BG10X6Biplanar422Unorm";
+        break;
+      case TextureFormat::R10X6BG10X6Biplanar444Unorm:
+        o << "TextureFormat::R10X6BG10X6Biplanar444Unorm";
         break;
           default:
             o << "TextureFormat::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<TextureFormat>::type>(value);
